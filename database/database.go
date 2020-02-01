@@ -28,7 +28,6 @@ func ConnectToDB() *sql.DB  {
 	db, err := sql.Open("postgres", psqlInfo)
 	if err != nil {
 		fmt.Println("Can't open data base:")
-		DBClose(db)
 		log.Fatal(err)
 	}
 	err = db.Ping()
