@@ -1,10 +1,10 @@
 package main
 
 import (
-	"./database"
-	"./exchanges"
 	"encoding/json"
 	"fmt"
+	"github.com/RedClusive/CryptoExchangeRates/database"
+	"github.com/RedClusive/CryptoExchangeRates/exchanges"
 	_ "github.com/lib/pq"
 	"io"
 	"log"
