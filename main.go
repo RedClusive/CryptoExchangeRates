@@ -100,7 +100,7 @@ func GetRates() string {
 			result += out
 			cnt++
 		} else {
-			log.Println("Info: no such pair:", pair)
+			log.Println("Info: no such pair:", Fp[pair])
 		}
 	}
 	result += "]"
