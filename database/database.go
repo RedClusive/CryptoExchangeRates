@@ -11,11 +11,11 @@ import (
 
 const (
 	tablename 		  = "ratesinfotable"
-	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) VALUES ($1, $2, $3, $4) ON CONFLICT (pairname) AND (exchangename) DO NOTHING"
+	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) VALUES ($1, $2, $3, $4) ON * CONFLICT  DO NOTHING"
 	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
-	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT)"
+	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT, PRIMARY KEY (pairname, exchangename))"
 	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
 )
 
