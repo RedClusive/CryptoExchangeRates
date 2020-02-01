@@ -3,7 +3,6 @@ package main
 import (
 	"./database"
 	"./exchanges"
-	"database/sql"
 	"encoding/json"
 	"fmt"
 	_ "github.com/lib/pq"
@@ -84,27 +83,18 @@ func UpdRates(m int, ch, quit chan bool, Exchanges *[]Exchange) {
 
 func GetRates() string {
 	fmt.Println("Getting rates...")
-	db := database.ConnectToDB()
-	defer database.DBClose(db)
 	result := "["
 	var pair, exchange, rate, t string
-	var tmp int
 	cnt := 0
 	for i := 1; true ; i++ {
-		row := db.QueryRow(database.SelectStatement, i)
-		err := row.Scan(&tmp, &pair, &exchange, &rate, &t)
-		pair = Fp[pair]
-		if err == sql.ErrNoRows {
+		if !database.SelectRow(i, &pair, &exchange, &rate, &t) {
 			break
-		}
-		if err != nil {
-			fmt.Println("Can't select row: ")
-			log.Fatal(err)
 		}
 		if rate != "none" {
 			if cnt != 0 {
 				result += ", "
 			}
+			pair = Fp[pair]
 			out := fmt.Sprintf("{\"pair\":\"%v\", \"exchange\":\"%v\", \"rate\":\"%v\", \"updated\":\"%v\"}",
 								pair, exchange, rate, t)
 			result += out
@@ -138,6 +128,7 @@ func main() {
 	Fp = make(map[string]string)
 	var m int
 	database.PrepareDB()
+	defer database.Afterparty()
 	Init(&m, &Exchanges)
 	ch := make(chan bool)
 	quit := make(chan bool)

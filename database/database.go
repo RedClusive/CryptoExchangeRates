@@ -9,6 +9,16 @@ import (
 	"unicode"
 )
 
+const (
+	tablename 		  = "ratesinfotable"
+	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) VALUES ($1, $2, $3, $4)"
+	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
+	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
+	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
+	CreateStatement   = "CREATE TABLE ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT)"
+	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
+)
+
 func ConnectToDB() *sql.DB  {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
@@ -34,15 +44,27 @@ func DBClose(db *sql.DB) {
 
 func PrepareDB() {
 	fmt.Println("Preparing the table...")
-
 	db := ConnectToDB()
 	defer DBClose(db)
-	_, err := db.Exec(TruncateStatement)
+	Afterparty()
+	_, err := db.Exec(CreateStatement)
 	if err != nil {
-		fmt.Println("Can't truncate table:")
+		fmt.Println("Can't create table:")
 		log.Fatal(err)
 	}
 	fmt.Println("Table is ready to use!")
+}
+
+func Afterparty() {
+	fmt.Print("Deleting the table...")
+	db := ConnectToDB()
+	defer DBClose(db)
+	_, err := db.Exec(DropTable)
+	if err != nil {
+		fmt.Println("Can't create table:")
+		log.Fatal(err)
+	}
+	fmt.Println("Done!")
 }
 
 func FormatPair(s *string) string {
@@ -62,6 +84,20 @@ func InsertRow(pairname, exchangename, rate, time string) {
 	if err != nil {
 		log.Println("Can't insert row: ", err)
 	}
+}
+
+func SelectRow(id int, pair, exchange, rate, t *string) bool {
+	db := ConnectToDB()
+	defer DBClose(db)
+	row := db.QueryRow(SelectStatement, id)
+	err := row.Scan(&id, pair, exchange, rate, t)
+	if err == sql.ErrNoRows {
+		return false
+	}
+	if err != nil {
+		log.Println("Can't select row: ", err)
+	}
+	return true
 }
 
 func SaveInDB(pairs, prices *[]string, name string) {
