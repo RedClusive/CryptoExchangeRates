@@ -11,7 +11,7 @@ import (
 
 const (
 	tablename 		  = "ratesinfotable"
-	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) VALUES ($1, $2, $3, $4) WHERE NOT EXISTS (SELECT * FROM ratesinfotable WHERE pairname = $1)"
+	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) WHERE NOT EXISTS (SELECT * FROM ratesinfotable WHERE pairname = $1) VALUES ($1, $2, $3, $4)"
 	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
