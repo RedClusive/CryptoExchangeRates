@@ -15,7 +15,7 @@ const (
 	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
-	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT, PRIMARY KEY (pairname, exchangename))"
+	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT, PRIMARY KEY (pairname, exchangename))"
 	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
 )
 
