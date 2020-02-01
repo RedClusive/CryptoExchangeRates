@@ -15,7 +15,7 @@ const (
 	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
-	CreateStatement   = "CREATE TABLE ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT)"
+	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL PRIMARY KEY, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT)"
 	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
 )
 
@@ -46,7 +46,6 @@ func PrepareDB() {
 	fmt.Println("Preparing the table...")
 	db := ConnectToDB()
 	defer DBClose(db)
-	Afterparty()
 	_, err := db.Exec(CreateStatement)
 	if err != nil {
 		fmt.Println("Can't create table:")

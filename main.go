@@ -128,7 +128,6 @@ func main() {
 	Fp = make(map[string]string)
 	var m int
 	database.PrepareDB()
-	defer database.Afterparty()
 	Init(&m, &Exchanges)
 	ch := make(chan bool)
 	quit := make(chan bool)
