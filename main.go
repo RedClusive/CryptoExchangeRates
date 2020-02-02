@@ -18,7 +18,6 @@ type Exchange interface {
 	DoQuery(chan bool)
 }
 
-
 var Fp map[string]string
 
 func Init(m *int, Exchanges *[]Exchange) {
@@ -67,7 +66,6 @@ func UpdRates(m int, ch, quit chan bool, Exchanges *[]Exchange) {
 		case <-quit:
 			return
 		default:
-			//fmt.Println("Updating rates...")
 			tmpCh := make(chan bool)
 			for _, cur := range *Exchanges {
 				go cur.DoQuery(tmpCh)
@@ -75,7 +73,6 @@ func UpdRates(m int, ch, quit chan bool, Exchanges *[]Exchange) {
 			for range *Exchanges {
 				<-tmpCh
 			}
-			//fmt.Println("Rates successfully updated!")
 			time.Sleep(time.Second * time.Duration(m))
 		}
 	}

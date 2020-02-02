@@ -10,13 +10,15 @@ import (
 )
 
 const (
-	tablename 		  = "ratesinfotable"
 	InsertStatement   = "INSERT INTO ratesinfotable (pairname, exchangename, rate, time) VALUES ($1, $2, $3, $4) ON CONFLICT DO NOTHING"
-	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
 	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT, PRIMARY KEY (pairname, exchangename))"
+	/*
+	tablename 		  = "ratesinfotable"
 	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
+	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
+	 */
 )
 
 func ConnectToDB() *sql.DB  {
@@ -52,18 +54,6 @@ func PrepareDB() {
 		log.Fatal(err)
 	}
 	fmt.Println("Table is ready to use!")
-}
-
-func Afterparty() {
-	fmt.Print("Deleting the table...")
-	db := ConnectToDB()
-	defer DBClose(db)
-	_, err := db.Exec(DropTable)
-	if err != nil {
-		fmt.Println("Can't create table:")
-		log.Fatal(err)
-	}
-	fmt.Println("Done!")
 }
 
 func FormatPair(s *string) string {
@@ -110,3 +100,17 @@ func SaveInDB(pairs, prices *[]string, name string) {
 		}
 	}
 }
+
+/*
+func Afterparty() {
+	fmt.Print("Deleting the table...")
+	db := ConnectToDB()
+	defer DBClose(db)
+	_, err := db.Exec(DropTable)
+	if err != nil {
+		fmt.Println("Can't create table:")
+		log.Fatal(err)
+	}
+	fmt.Println("Done!")
+}
+ */
