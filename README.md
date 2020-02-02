@@ -2,7 +2,7 @@
 
 This service gets relevant information about actual exchange rates of given cryptocurrency pairs from different exchanges and answers **_"/get_rates"_** http queries which return **_.json_** with saved rates.
 
-**_Supported exchanges:_** _Binance_, _Exmo_.
+**_Supported exchanges for now:_** _Binance_, _Exmo_.
 
 ## Example:
 ```
