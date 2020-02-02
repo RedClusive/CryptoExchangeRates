@@ -31,6 +31,6 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
     **_!!!_** Format of **input.txt**:
 
-    You must give integer number **m** in the **_first_** row **before** cryptocurrency pairs.
+    You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
 
 
