@@ -19,13 +19,18 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
 1) Change connection constants in **database/config.go**
 
+Sample with constants that appropriate only to my own local database:
+
 ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
 
 2) Change **input.txt** 
 
+
+
 ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
 
 **_!!!_** Format of **input.txt**:
+
 You must give integer number **m** in the **_first_** row **before** cryptocurrency pairs.
 
 
