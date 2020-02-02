@@ -11,6 +11,5 @@ This service gets relevant information about actual exchange rates of given cryp
 
 # Stack
 
-**_Postgresql_** has been used to store information about given cryptocurrency pairs (pair name, exchange name, actual rate, update time).
-
+**_Postgresql_** has been used to store information about given cryptocurrency pairs.
 
