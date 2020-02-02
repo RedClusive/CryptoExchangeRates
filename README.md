@@ -13,3 +13,7 @@ This service gets relevant information about actual exchange rates of given cryp
 
 **_Postgresql_** has been used to store information about given cryptocurrency pairs.
 
+# How to run it
+
+
+
