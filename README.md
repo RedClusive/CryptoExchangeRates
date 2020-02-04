@@ -1,4 +1,4 @@
-# Cryptocurrency exchange rates
+# Cryptocurrency exchange rates spectator
 
 This service gets relevant information about actual exchange rates of given cryptocurrency pairs from different exchanges and answers **_"/get_rates"_** http queries which return **_.json_** with saved rates.
 
