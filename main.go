@@ -3,8 +3,8 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/RedClusive/CryptoExchangeRates/database"
-	"github.com/RedClusive/CryptoExchangeRates/exchanges"
+	"github.com/RedClusive/ccspectator/database"
+	"github.com/RedClusive/ccspectator/exchanges"
 	_ "github.com/lib/pq"
 	"io"
 	"log"

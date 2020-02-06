@@ -2,7 +2,7 @@ package exchanges
 
 import (
 	"fmt"
-	"github.com/RedClusive/CryptoExchangeRates/database"
+	"github.com/RedClusive/ccspectator/database"
 	"io/ioutil"
 	"log"
 	"net/http"

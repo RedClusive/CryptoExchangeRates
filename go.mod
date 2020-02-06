@@ -1,4 +1,4 @@
-module github.com/RedClusive/CryptoExchangeRates
+module github.com/RedClusive/ccspectator
 
 go 1.13
 
