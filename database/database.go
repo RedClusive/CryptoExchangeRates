@@ -110,16 +110,3 @@ func SaveInDB(pairs, prices *[]string, name string) {
 	}
 }
 
-/*
-func Afterparty() {
-	fmt.Print("Deleting the table...")
-	db := ConnectToDB()
-	defer DBClose(db)
-	_, err := db.Exec(DropTable)
-	if err != nil {
-		fmt.Println("Can't create table:")
-		log.Fatal(err)
-	}
-	fmt.Println("Done!")
-}
- */
