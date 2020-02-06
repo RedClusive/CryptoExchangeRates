@@ -7,9 +7,9 @@ services:
         ports:
             - "80:80"
         depends_on:
-       	    - db
-
-    db
+            - db
+    
+    db:
         image: postgres
         environment:
             POSTGRES_USER: postgres
