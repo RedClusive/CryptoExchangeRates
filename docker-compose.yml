@@ -1,6 +1,14 @@
 version: '3'
 
 services:
+    db:
+        image: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: 1862
+            POSTGRES_DB: humble_base
+        ports:
+            - 5432:5432
 
     spectator:
         build: .
@@ -8,10 +16,3 @@ services:
             - "80:80"
         depends_on:
             - db
-    
-    db:
-        image: postgres
-        environment:
-            POSTGRES_USER: postgres
-            POSTGRES_PASSWORD: 1862
-            POSTGRES_DB: humble_base
