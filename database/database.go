@@ -29,10 +29,16 @@ func ConnectToDB() *sql.DB  {
 		if err != nil {
 			log.Println("Can't open data base:")
 			log.Println(err)
+			time.Sleep(time.Second * time.Duration(10))
 		} else {
-			err = db.Ping()
-			if err != nil {
-				log.Fatal(err)
+			for {
+				err = db.Ping()
+				if err != nil {
+					log.Println(err)
+					time.Sleep(time.Second * time.Duration(5))
+				} else {
+					break;
+				}
 			}
 			return db
 		}
