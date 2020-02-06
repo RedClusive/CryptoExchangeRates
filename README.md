@@ -23,9 +23,9 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
   * Change connection constants in **database/config.go**
 
-        Sample with constants that appropriate only to my own local database:
+   Sample with constants that appropriate only to my own local database:
 
-        ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
+   ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
 
   * Change **input.txt** 
 
