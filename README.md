@@ -23,17 +23,17 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
   * Change connection constants in **database/config.go**
 
-   Sample with constants that appropriate only to my own local database:
+       Sample with constants that appropriate only to my own local database:
 
-   ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
+      ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
 
   * Change **input.txt** 
 
-   ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
+      ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
 
-   **_!!!_** Format of **input.txt**:
+      **_!!!_** Format of **input.txt**:
 
-   You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
+      You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
 
 2. Docker (database will be created in container; for connection should be used default **database/config.go**)
     
