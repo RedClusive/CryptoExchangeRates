@@ -10,9 +10,11 @@ cmd="$@"
 
 until curl http://"$host":"$port"; do
   >&2 echo "DB is unavailable - sleeping"
-  sleep 120
+  sleep 10
 done
 
 >&2 echo "DB is up - executing command"
+
+sleep 120
 
 exec $cmd
