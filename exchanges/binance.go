@@ -3,7 +3,6 @@ package exchanges
 import (
 	"encoding/json"
 	"github.com/RedClusive/ccspectator/database"
-	"io"
 	"log"
 	"net/http"
 )
@@ -16,16 +15,14 @@ func (cur *Binance) Parse(resp *http.Response, pairs, prices *[]string) {
 	type Ticker struct {
 		Symbol, Price string
 	}
-	dec := json.NewDecoder(resp.Body)
-	var a Ticker
-	for {
-		if err := dec.Decode(&a); err == io.EOF {
-			break;
-		} else if err != nil {
-			log.Println(cur.GetExchangeName(), err)
-		}
-		*pairs = append(*pairs, a.Symbol)
-		*prices = append(*prices, a.Price)
+	var dec []Ticker
+	err := json.NewDecoder(resp.Body).Decode(&dec)
+	if err != nil {
+		log.Println(cur.GetExchangeName(), err)
+	}
+	for _, v := range dec {
+		*pairs = append(*pairs, v.Symbol)
+		*prices = append(*prices, v.Price)
 	}
 }
 
