@@ -1,7 +1,7 @@
 package exchanges
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/RedClusive/ccspectator/database"
 	"io/ioutil"
 	"log"
@@ -12,41 +12,21 @@ type Exmo struct {
 	Name, Url, TPrice string
 }
 
-func (cur *Exmo) Parse(b *[]byte, pairs, prices *[]string) {
-	cnt := 0
-	CurPair := ""
-	CurPrice := ""
-	for _, v := range *b {
-		if string(v) == string(34) {
-			cnt++
-			if cnt % 36 == 1 {
-				if len(CurPair) != 0 {
-					*pairs = append(*pairs, CurPair)
-					CurPair = ""
-				}
-			}
-			if cnt % 36 == 25 {
-				if len(CurPrice) != 0 {
-					*prices = append(*prices, CurPrice)
-					CurPrice = ""
-				}
-			}
-		} else {
-			if cnt % 36 == 1 {
-				CurPair += string(v)
-			}
-			if cnt % 36 == 25 {
-				CurPrice += string(v)
-			}
-		}
+func (cur *Exmo) Parse(resp *http.Response, pairs, prices *[]string) {
+	type Ticker struct {
+		Avg string
 	}
-	if len(CurPair) != 0 {
-		*pairs = append(*pairs, CurPair)
-		CurPair = ""
+	jsonStream, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Println(cur.GetExchangeName(), err)
 	}
-	if len(CurPrice) != 0 {
-		*prices = append(*prices, CurPrice)
-		CurPrice = ""
+	var dat map[string]Ticker
+	if err := json.Unmarshal(jsonStream, &dat); err != nil {
+		log.Println(cur.GetExchangeName(), err)
+	}
+	for key, value := range dat {
+		*pairs = append(*pairs, key)
+		*prices = append(*prices, value.Avg)
 	}
 }
 
@@ -66,24 +46,18 @@ func (cur *Exmo) DoQuery(ch chan bool) {
 	defer func(){
 		ch <- true
 	}()
-	res, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
+	resp, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
+	defer func(){
+		err := resp.Body.Close()
+		if err != nil {
+			log.Println(cur.GetExchangeName(), err)
+		}
+	} ()
 	if err != nil {
-		log.Println("Exchange:", cur.GetExchangeName())
-		log.Println("Can't do query:")
-		log.Println(err)
+		log.Println(cur.GetExchangeName(), err)
 		return
 	}
-	ToParse, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println("Can't read from Body:")
-		log.Fatal(err)
-	}
-	err = res.Body.Close()
-	if err != nil {
-		fmt.Println("Can't close Body:")
-		log.Fatal(err)
-	}
 	var pairs, prices []string
-	(*cur).Parse(&ToParse, &pairs, &prices)
+	(*cur).Parse(resp, &pairs, &prices)
 	database.SaveInDB(&pairs, &prices, cur.GetExchangeName())
 }

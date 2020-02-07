@@ -1,9 +1,9 @@
 package exchanges
 
 import (
-	"fmt"
+	"encoding/json"
 	"github.com/RedClusive/ccspectator/database"
-	"io/ioutil"
+	"io"
 	"log"
 	"net/http"
 )
@@ -12,41 +12,20 @@ type Binance struct {
 	Name, Url, TPrice string
 }
 
-func (cur *Binance) Parse(b *[]byte, pairs, prices *[]string) {
-	cnt := 0
-	CurPair := ""
-	CurPrice := ""
-	for _, v := range *b {
-		if string(v) == string(34) {
-			cnt++
-			if cnt % 8 == 3 {
-				if len(CurPair) != 0 {
-					*pairs = append(*pairs, CurPair)
-					CurPair = ""
-				}
-			}
-			if cnt % 8 == 7 {
-				if len(CurPrice) != 0 {
-					*prices = append(*prices, CurPrice)
-					CurPrice = ""
-				}
-			}
-		} else {
-			if cnt % 8 == 3 {
-				CurPair += string(v)
-			}
-			if cnt % 8 == 7 {
-				CurPrice += string(v)
-			}
+func (cur *Binance) Parse(resp *http.Response, pairs, prices *[]string) {
+	type Ticker struct {
+		Symbol, Price string
+	}
+	dec := json.NewDecoder(resp.Body)
+	var a Ticker
+	for {
+		if err := dec.Decode(&a); err == io.EOF {
+			break;
+		} else if err != nil {
+			log.Println(cur.GetExchangeName(), err)
 		}
-	}
-	if len(CurPair) != 0 {
-		*pairs = append(*pairs, CurPair)
-		CurPair = ""
-	}
-	if len(CurPrice) != 0 {
-		*prices = append(*prices, CurPrice)
-		CurPrice = ""
+		*pairs = append(*pairs, a.Symbol)
+		*prices = append(*prices, a.Price)
 	}
 }
 
@@ -66,24 +45,18 @@ func (cur *Binance) DoQuery(ch chan bool) {
 	defer func(){
 		ch <- true
 	}()
-	res, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
+	resp, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
+	defer func(){
+		err := resp.Body.Close()
+		if err != nil {
+			log.Println(cur.GetExchangeName(), err)
+		}
+	} ()
 	if err != nil {
-		log.Println("Exchange:", cur.GetExchangeName())
-		log.Println("Can't do query:")
-		log.Println(err)
+		log.Println(cur.GetExchangeName(), err)
 		return
 	}
-	ToParse, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		fmt.Println("Can't read from Body:")
-		log.Fatal(err)
-	}
-	err = res.Body.Close()
-	if err != nil {
-		fmt.Println("Can't close Body:")
-		log.Fatal(err)
-	}
 	var pairs, prices []string
-	(*cur).Parse(&ToParse, &pairs, &prices)
+	(*cur).Parse(resp, &pairs, &prices)
 	database.SaveInDB(&pairs, &prices, cur.GetExchangeName())
 }
