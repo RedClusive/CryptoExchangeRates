@@ -21,7 +21,7 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
   * Create a postgresql database
 
-  * Set environment variables **HOST**, **PORT**, **USER**, **DBNAME** to appropriate you
+  * Set environment variables **HOST**, **PORT**, **USER**, **PASSWORD**, **DBNAME** to appropriate you
 
        **_Alt way without changing env. vars_**: Change connection constants in **database/config.go**
 
