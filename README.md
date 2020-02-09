@@ -21,7 +21,9 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
   * Create a postgresql database
 
-  * Change connection constants in **database/config.go**
+  * Set environment variables **HOST**, **PORT**, **USER**, **DBNAME** to appropriate you
+
+       **_Alt way without changing env. vars_**: Change connection constants in **database/config.go**
 
        Sample with constants that appropriate only to my own local database:
 
