@@ -55,6 +55,7 @@ func DBClose(db *sql.DB) {
 
 func PrepareDB() {
 	fmt.Println("Preparing the table...")
+	SetUpConfig()
 	db := ConnectToDB()
 	defer DBClose(db)
 	_, err := db.Exec(CreateStatement)
