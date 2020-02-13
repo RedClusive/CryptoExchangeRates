@@ -8,7 +8,10 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
 ## Example:
 ```
-[{"pair":"btc_usdt", "exchange":"Binance", "rate":"9362.69000000", "updated":"2020-02-02 12:08:21.099"}, {"pair":"btc_usdt", "exchange":"Exmo", "rate":"9346.36554174", "updated":"2020-02-02 12:08:21.044"}]
+[
+{"pair":"btc_usdt", "exchange":"Binance", "rate":"9362.69000000", "updated":"2020-02-02 12:08:21.099"}, 
+{"pair":"btc_usdt", "exchange":"Exmo", "rate":"9346.36554174", "updated":"2020-02-02 12:08:21.044"}
+]
 ```
 
 # Stack
@@ -43,5 +46,5 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
   
 # How to try it
 
-Click on it: https://ccspectator.herokuapp.com/get_rates
+Link: https://ccspectator.herokuapp.com/get_rates
 
