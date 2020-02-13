@@ -1,8 +1,8 @@
 # Cryptocurrency exchange rates spectator
 
-This service gets relevant information about actual exchange rates of given cryptocurrency pairs from different exchanges and answers **_"/get_rates"_** http queries which return **_.json_** with saved rates.
+This service gets relevant information about actual exchange rates of given cryptocurrency pairs from different exchanges and answers `"/get_rates"` http queries which return **_.json_** with saved rates.
 
-Exchange rates is updated every **m** seconds (where **m** is a given by user **_integer_** value from **input.txt**)
+Exchange rates is updated every **m** seconds (where **m** is a given by user **_integer_** value from `input.txt`)
 
 **_Supported exchanges for now:_** _Binance_, _Exmo_.
 
@@ -20,29 +20,29 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
 # How to use it
 
-1. Without docker
+Without docker:
 
-  * Create a postgresql database
+  1. Create a postgresql database
 
-  * Set environment variables **DBHOST**, **DBPORT**, **DBUSER**, **DBPASSWORD**, **DBNAME** to appropriate you
+  2. Initialize environment variables `PORT`, `DBHOST`, `DBPORT`, `DBUSER`, `DBPASSWORD`, `DBNAME`
 
-       **_Alt way without changing env. vars_**: Change connection constants in **database/config.go**
+      Name | Description
+      -----|------------
+      PORT | Port that app should listen
+      DBHOST | database host
+      DBPORT | database port (default Postgresql port: 5432)
+      DBUSE  | database username
+      DBPASSWORD | database password
+      DBNAME | database name
 
-       Sample with constants that appropriate only to my own local database:
-
-      ![Sample1](https://sun9-70.userapi.com/c850416/v850416442/1a877f/Fz5cWGZ1KmU.jpg)
-
-  * Change **input.txt** 
+  3. Initialize `input.txt` 
 
       ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
 
-      **_!!!_** Format of **input.txt**:
+      **_!!!_** Format of `input.txt`:
 
       You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
-
-2. Docker (database will be created in container; for connection should be used default **database/config.go**)
-    
-  * just "docker-compose up"
+  4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`
   
 # How to try it
 
