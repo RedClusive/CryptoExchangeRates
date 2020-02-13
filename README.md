@@ -16,7 +16,7 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
 # Stack
 
-**_Postgresql_** has been used to store information about given cryptocurrency pairs.
+Application uses **_Postgresql_** to store information about given cryptocurrency pairs.
 
 # How to use it
 
@@ -40,7 +40,7 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
       **_!!!_** Format of `input.txt`:
 
       You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
-4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`
+4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`)
   
 # How to try it
 
