@@ -14,16 +14,14 @@ const (
 	UpdateStatement   = "UPDATE ratesinfotable SET rate = $3, time = $4 WHERE pairname = $1 AND exchangename = $2"
 	SelectStatement	  = "SELECT * FROM ratesinfotable WHERE id = $1"
 	CreateStatement   = "CREATE TABLE IF NOT EXISTS ratesinfotable (id SERIAL, pairname TEXT, exchangename TEXT, rate TEXT, time TEXT, PRIMARY KEY (pairname, exchangename))"
-	/*
-	tablename 		  = "ratesinfotable"
-	DropTable 		  = "DROP TABLE IF EXISTS ratesinfotable"
-	TruncateStatement = "TRUNCATE ratesinfotable RESTART IDENTITY"
-	 */
 )
 
 func ConnectToDB() *sql.DB  {
 	psqlInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
 		host, port, user, password, dbname)
+	if db_url != "none" {
+		psqlInfo = db_url
+	}
 	for {
 		db, err := sql.Open("postgres", psqlInfo)
 		if err != nil {

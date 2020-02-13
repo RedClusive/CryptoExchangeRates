@@ -6,4 +6,5 @@ var (
 	user		= "postgres"
 	password 	= "1862"
 	dbname		= "humble_base"
+	db_url 		= "none"
 )

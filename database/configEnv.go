@@ -26,4 +26,5 @@ func SetUpConfig() {
 	user = getEnv("USER", user)
 	password = getEnv("PASSWORD", password)
 	dbname = getEnv("DBNAME", dbname)
+	db_url = getEnv("DATABASE_URL", db_url)
 }
