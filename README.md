@@ -20,11 +20,9 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 
 # How to use it
 
-Without docker:
+1. Create a postgresql database
 
-  1. Create a postgresql database
-
-  2. Initialize environment variables `PORT`, `DBHOST`, `DBPORT`, `DBUSER`, `DBPASSWORD`, `DBNAME`
+2. Initialize environment variables `PORT`, `DBHOST`, `DBPORT`, `DBUSER`, `DBPASSWORD`, `DBNAME`
 
       Name | Description
       -----|------------
@@ -35,14 +33,14 @@ Without docker:
       DBPASSWORD | database password
       DBNAME | database name
 
-  3. Initialize `input.txt` 
+3. Initialize `input.txt` 
 
       ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
 
       **_!!!_** Format of `input.txt`:
 
       You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
-  4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`
+4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`
   
 # How to try it
 
