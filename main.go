@@ -145,5 +145,5 @@ func main() {
 	http.HandleFunc("/", h1)
 	http.HandleFunc("/get_rates", h2)
 
-	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServe(":8000", nil))
 }
