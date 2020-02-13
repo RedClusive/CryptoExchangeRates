@@ -145,5 +145,7 @@ func main() {
 	http.HandleFunc("/", h1)
 	http.HandleFunc("/get_rates", h2)
 
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	port := database.GetEnv("PORT", "8000")
+
+	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
