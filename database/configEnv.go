@@ -21,10 +21,10 @@ func getIntEnv(key string, defaultVal int) int {
 }
 
 func SetUpConfig() {
-	host = getEnv("HOST", host)
-	port= getIntEnv("PORT", port)
-	user = getEnv("USER", user)
-	password = getEnv("PASSWORD", password)
+	host = getEnv("DBHOST", host)
+	port= getIntEnv("DBPORT", port)
+	user = getEnv("DBUSER", user)
+	password = getEnv("DBPASSWORD", password)
 	dbname = getEnv("DBNAME", dbname)
 	db_url = getEnv("DATABASE_URL", db_url)
 }
