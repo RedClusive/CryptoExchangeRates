@@ -40,4 +40,8 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 2. Docker (database will be created in container; for connection should be used default **database/config.go**)
     
   * just "docker-compose up"
+  
+# How to try it
+
+Click on it: https://ccspectator.herokuapp.com/get_rates
 
