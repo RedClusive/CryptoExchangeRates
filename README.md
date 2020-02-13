@@ -29,7 +29,7 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
       PORT | Port that app should listen
       DBHOST | database host
       DBPORT | database port (default Postgresql port: 5432)
-      DBUSE  | database username
+      DBUSER  | database username
       DBPASSWORD | database password
       DBNAME | database name
 
