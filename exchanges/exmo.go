@@ -6,10 +6,11 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sync"
 )
 
 type Exmo struct {
-	Name, Url, TPrice string
+	Name, Url, Tprice string
 }
 
 func (cur *Exmo) Parse(resp *http.Response, pairs, prices *[]string) {
@@ -35,17 +36,15 @@ func (cur *Exmo) GetUrl() string {
 }
 
 func (cur *Exmo) GetQueryName() string {
-	return cur.TPrice
+	return cur.Tprice
 }
 
 func (cur *Exmo) GetExchangeName() string {
 	return cur.Name
 }
 
-func (cur *Exmo) DoQuery(ch chan bool) {
-	defer func(){
-		ch <- true
-	}()
+func (cur *Exmo) DoQuery(wg *sync.WaitGroup) {
+	wg.Done()
 	resp, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
 	defer func(){
 		err := resp.Body.Close()
@@ -58,6 +57,6 @@ func (cur *Exmo) DoQuery(ch chan bool) {
 		return
 	}
 	var pairs, prices []string
-	(*cur).Parse(resp, &pairs, &prices)
+	cur.Parse(resp, &pairs, &prices)
 	database.SaveInDB(&pairs, &prices, cur.GetExchangeName())
 }

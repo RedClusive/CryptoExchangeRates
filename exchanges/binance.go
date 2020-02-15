@@ -5,10 +5,11 @@ import (
 	"github.com/RedClusive/ccspectator/database"
 	"log"
 	"net/http"
+	"sync"
 )
 
 type Binance struct {
-	Name, Url, TPrice string
+	Name, Url, Tprice string
 }
 
 func (cur *Binance) Parse(resp *http.Response, pairs, prices *[]string) {
@@ -31,17 +32,15 @@ func (cur *Binance) GetUrl() string {
 }
 
 func (cur *Binance) GetQueryName() string {
-	return cur.TPrice
+	return cur.Tprice
 }
 
 func (cur *Binance) GetExchangeName() string {
 	return cur.Name
 }
 
-func (cur *Binance) DoQuery(ch chan bool) {
-	defer func(){
-		ch <- true
-	}()
+func (cur *Binance) DoQuery(wg *sync.WaitGroup) {
+	defer wg.Done()
 	resp, err := http.Get((*cur).GetUrl() + (*cur).GetQueryName())
 	defer func(){
 		err := resp.Body.Close()
@@ -54,6 +53,6 @@ func (cur *Binance) DoQuery(ch chan bool) {
 		return
 	}
 	var pairs, prices []string
-	(*cur).Parse(resp, &pairs, &prices)
+	cur.Parse(resp, &pairs, &prices)
 	database.SaveInDB(&pairs, &prices, cur.GetExchangeName())
 }
