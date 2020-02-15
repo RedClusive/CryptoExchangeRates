@@ -9,8 +9,18 @@ Exchange rates is updated every **m** seconds (where **m** is a given by user **
 ## Example:
 ```
 [
-{"pair":"btc_usdt", "exchange":"Binance", "rate":"9362.69000000", "updated":"2020-02-02 12:08:21.099"}, 
-{"pair":"btc_usdt", "exchange":"Exmo", "rate":"9346.36554174", "updated":"2020-02-02 12:08:21.044"}
+ {
+  "Pair": "btc_usdt",
+  "Exchange": "Binance",
+  "Rate": "10249.83000000",
+  "Updated": "2020-02-15 14:35:24.315"
+ },
+ {
+  "Pair": "btc_usdt",
+  "Exchange": "Exmo",
+  "Rate": "10278.33958778",
+  "Updated": "2020-02-15 14:35:24.139"
+ }
 ]
 ```
 
