@@ -73,7 +73,10 @@ func UpdRates(m int, quit chan bool, exchanges *[]exchanges.Exchange) {
 func GetRates() string {
 	fmt.Println("Getting rates...")
 	type Ticker struct {
-		pair, exchange, rate, updated string
+		Pair string `json:"pair"`
+		Exchange string `json:"exchange"`
+		Rate string `json:"rate"`
+		Updated string `json:"updated"`
 	}
 	var info []Ticker
 	var pair, exchange, rate, t string
