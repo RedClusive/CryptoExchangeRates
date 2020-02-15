@@ -117,20 +117,13 @@ func main() {
 	quit := make(chan bool)
 	go UpdRates(m, quit, &exsList)
 	h1 := func(w http.ResponseWriter, _ *http.Request) {
-		_, err := fmt.Fprintf(w, "Use \"localhost/get_rates\" to get actual rates")
-		if err != nil {
-			log.Fatal(err)
-		}
-	}
-	h2 := func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprint(w, GetRates())
 		if err != nil {
 			log.Fatal(err)
 		}
 	}
 
-	http.HandleFunc("/", h1)
-	http.HandleFunc("/get_rates", h2)
+	http.HandleFunc("/get_rates", h1)
 
 	port := database.GetEnv("PORT", "8000")
 
