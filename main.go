@@ -88,7 +88,7 @@ func GetRates() string {
 			log.Println("Info: no such pair:", pair)
 		}
 	}
-	res, err := json.MarshalIndent(info, "", " ")
+	res, err := json.Marshal(info)
 	if err != nil {
 		log.Println("GetRates, can't Marshal info: ", err)
 	} else {
