@@ -3,57 +3,40 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"github.com/RedClusive/ccspectator/database"
 	"github.com/RedClusive/ccspectator/exchanges"
 	_ "github.com/lib/pq"
-	"io"
 	"log"
 	"net/http"
-	"os"
 	"sync"
 	"time"
 )
 
-var Fp map[string]string
+var FormattedPair map[string]string = make(map[string]string)
 
-func Init(m *int, Exchanges *[]exchanges.Exchange) {
+func Init(sleepDur *time.Duration, Exchanges *[]exchanges.Exchange) error {
 	fmt.Println("Scanning input file...")
-	file, err := os.Open("input.txt")
-	defer func () {
-		err = file.Close()
-		if err != nil {
-			fmt.Println("Can't close file: input.txt")
-			log.Fatal(err)
-		}
-	}()
-	if err != nil {
-		fmt.Println("Can't open input.txt")
-		log.Fatal(err)
+	type Config struct {
+		SleepSec int
+		Pairs []string
 	}
-	_, err = fmt.Fscan(file, m)
-	if err != nil {
-		fmt.Println("Can't scan frequency from input.txt")
-		log.Fatal(err)
+	var conf Config
+	if _, err := toml.DecodeFile("input.toml", &conf); err != nil {
+		return err
 	}
-	s := ""
-	for {
-		_, err := fmt.Fscan(file, &s)
-		if err == io.EOF {
-			break
-		}
-		if err != nil {
-			fmt.Println("Can't scan pair from input.txt")
-			log.Fatal(err)
-		}
-		Fp[database.FormatPair(&s)] = s
+	*sleepDur = time.Duration(conf.SleepSec) * time.Second
+	for _, s := range conf.Pairs {
+		FormattedPair[database.FormatPair(&s)] = s
 		for _, cur := range *Exchanges {
 			database.InsertRow(s, cur.GetExchangeName(), "none", "none")
 		}
 	}
 	fmt.Println("Input successfully done!")
+	return nil
 }
 
-func UpdRates(m int, quit chan bool, exchanges *[]exchanges.Exchange) {
+func UpdLoop(sleepDur time.Duration, quit chan bool, exchanges *[]exchanges.Exchange) {
 	for {
 		select {
 		case <-quit:
@@ -65,7 +48,7 @@ func UpdRates(m int, quit chan bool, exchanges *[]exchanges.Exchange) {
 				go cur.DoQuery(&wg)
 			}
 			wg.Wait()
-			time.Sleep(time.Second * time.Duration(m))
+			time.Sleep(sleepDur)
 		}
 	}
 }
@@ -84,7 +67,7 @@ func GetRates() string {
 		if !database.SelectRow(i, &pair, &exchange, &rate, &t) {
 			break
 		}
-		pair = Fp[pair]
+		pair = FormattedPair[pair]
 		if rate != "none" {
 			info = append(info, Ticker{pair, exchange, rate, t});
 		} else {
@@ -113,12 +96,17 @@ func main() {
 			Tprice: "v1/ticker",
 		},
 	}
-	Fp = make(map[string]string)
-	var m int
-	database.PrepareDB()
-	Init(&m, &exsList)
+	var sleepDur time.Duration
+	err := database.PrepareDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+	err = Init(&sleepDur, &exsList)
+	if err != nil {
+		log.Fatal(err)
+	}
 	quit := make(chan bool)
-	go UpdRates(m, quit, &exsList)
+	go UpdLoop(sleepDur, quit, &exsList)
 	h1 := func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprint(w, GetRates())
 		if err != nil {

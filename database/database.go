@@ -46,22 +46,23 @@ func ConnectToDB() *sql.DB  {
 func DBClose(db *sql.DB) {
 	err := db.Close()
 	if err != nil {
-		fmt.Println("Can't close data base:")
-		log.Fatal(err)
+		log.Println("Can't close data base:")
+		log.Println(err)
 	}
 }
 
-func PrepareDB() {
+func PrepareDB() error {
 	fmt.Println("Preparing the table...")
 	SetUpConfig()
 	db := ConnectToDB()
 	defer DBClose(db)
 	_, err := db.Exec(CreateStatement)
 	if err != nil {
-		fmt.Println("Can't create table:")
-		log.Fatal(err)
+		log.Println("Can't create table:")
+		return err
 	}
 	fmt.Println("Table is ready to use!")
+	return nil
 }
 
 func FormatPair(s *string) string {
