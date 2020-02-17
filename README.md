@@ -43,13 +43,8 @@ Application uses **_Postgresql_** to store information about given cryptocurrenc
       DBPASSWORD | database password
       DBNAME | database name
 
-3. Initialize `input.txt` 
+3. Initialize `input.toml` 
 
-      ![Sample2](https://sun9-32.userapi.com/c205828/v205828442/51021/MroGCQwTVXo.jpg)
-
-      **_!!!_** Format of `input.txt`:
-
-      You must give integer number **m** in the **first** row **before** cryptocurrency pairs.
 4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`)
   
 # How to try it
