@@ -43,7 +43,7 @@ Application uses **_Postgresql_** to store information about given cryptocurrenc
       DBPASSWORD | database password
       DBNAME | database name
 
-3. Initialize `input.toml` 
+3. Initialize `config.toml` 
 
 4. `go run main.go` or you can use `Dockerfile` or `docker-compose.yml` (If you use `docker-compose.yml` database will be created in container automatically; for connection should be used default `database/config.go`)
   
