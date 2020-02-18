@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/RedClusive/ccspectator/database"
+	"github.com/RedClusive/ccspectator/environment"
 	"github.com/RedClusive/ccspectator/exchanges"
 	_ "github.com/lib/pq"
 	"log"
@@ -15,20 +16,20 @@ import (
 
 var FormattedPair map[string]string = make(map[string]string)
 
-func Init(sleepDur *time.Duration, Exchanges *[]exchanges.Exchange) error {
+func Init(sleepDur *time.Duration, exsList *[]exchanges.Exchange) error {
 	fmt.Println("Scanning input file...")
 	type Config struct {
 		SleepSec int
 		Pairs []string
 	}
 	var conf Config
-	if _, err := toml.DecodeFile("input.toml", &conf); err != nil {
+	if _, err := toml.DecodeFile("config.toml", &conf); err != nil {
 		return err
 	}
 	*sleepDur = time.Duration(conf.SleepSec) * time.Second
 	for _, s := range conf.Pairs {
 		FormattedPair[database.FormatPair(&s)] = s
-		for _, cur := range *Exchanges {
+		for _, cur := range *exsList {
 			database.InsertRow(s, cur.GetExchangeName(), "none", "none")
 		}
 	}
@@ -36,14 +37,14 @@ func Init(sleepDur *time.Duration, Exchanges *[]exchanges.Exchange) error {
 	return nil
 }
 
-func UpdLoop(sleepDur time.Duration, quit chan bool, exchanges *[]exchanges.Exchange) {
+func UpdLoop(sleepDur time.Duration, quit chan bool, exsList *[]exchanges.Exchange) {
 	for {
 		select {
 		case <-quit:
 			return
 		default:
 			var wg sync.WaitGroup
-			for _, cur := range *exchanges {
+			for _, cur := range *exsList {
 				wg.Add(1)
 				go cur.DoQuery(&wg)
 			}
@@ -88,12 +89,12 @@ func main() {
 		&exchanges.Binance{
 			Name: "Binance",
 			Url: "https://api.binance.com/api/",
-			Tprice: "v3/ticker/price",
+			RateQuery: "v3/ticker/price",
 		},
 		&exchanges.Exmo{
 			Name: "Exmo",
 			Url: "https://api.exmo.com/",
-			Tprice: "v1/ticker",
+			RateQuery: "v1/ticker",
 		},
 	}
 	var sleepDur time.Duration
@@ -116,7 +117,7 @@ func main() {
 
 	http.HandleFunc("/get_rates", h1)
 
-	port := database.GetEnv("PORT", "8000")
+	port := environment.GetEnv("PORT", "8000")
 
 	log.Fatal(http.ListenAndServe(":" + port, nil))
 }
