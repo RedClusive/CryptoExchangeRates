@@ -10,7 +10,9 @@ import (
 )
 
 type Exmo struct {
-	Name, Url, RateQuery string
+	Name string
+	Url string
+	RateQuery string
 }
 
 func (cur *Exmo) Parse(resp *http.Response, pairs, prices *[]string) {

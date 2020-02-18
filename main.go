@@ -37,7 +37,7 @@ func Init(sleepDur *time.Duration, exsList *[]exchanges.Exchange) error {
 	return nil
 }
 
-func UpdLoop(sleepDur time.Duration, quit chan bool, exsList *[]exchanges.Exchange) {
+func UpdLoop(sleepDur time.Duration, quit chan struct{}, exsList *[]exchanges.Exchange) {
 	for {
 		select {
 		case <-quit:
@@ -106,12 +106,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	quit := make(chan bool)
+	quit := make(chan struct{})
 	go UpdLoop(sleepDur, quit, &exsList)
 	h1 := func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprint(w, GetRates())
 		if err != nil {
-			log.Fatal(err)
+			log.Println(500, err)
 		}
 	}
 

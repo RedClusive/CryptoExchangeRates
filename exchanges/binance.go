@@ -9,7 +9,9 @@ import (
 )
 
 type Binance struct {
-	Name, Url, RateQuery string
+	Name string
+	Url string
+	RateQuery string
 }
 
 func (cur *Binance) Parse(resp *http.Response, pairs, prices *[]string) {
