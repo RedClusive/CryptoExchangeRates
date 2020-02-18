@@ -111,7 +111,7 @@ func main() {
 	h1 := func(w http.ResponseWriter, _ *http.Request) {
 		_, err := fmt.Fprint(w, GetRates())
 		if err != nil {
-			log.Println(500, err)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	}
 
