@@ -10,7 +10,7 @@ import (
 )
 
 type Exmo struct {
-	Name, Url, Tprice string
+	Name, Url, RateQuery string
 }
 
 func (cur *Exmo) Parse(resp *http.Response, pairs, prices *[]string) {
@@ -36,7 +36,7 @@ func (cur *Exmo) GetUrl() string {
 }
 
 func (cur *Exmo) GetQueryName() string {
-	return cur.Tprice
+	return cur.RateQuery
 }
 
 func (cur *Exmo) GetExchangeName() string {

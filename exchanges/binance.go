@@ -9,7 +9,7 @@ import (
 )
 
 type Binance struct {
-	Name, Url, Tprice string
+	Name, Url, RateQuery string
 }
 
 func (cur *Binance) Parse(resp *http.Response, pairs, prices *[]string) {
@@ -32,7 +32,7 @@ func (cur *Binance) GetUrl() string {
 }
 
 func (cur *Binance) GetQueryName() string {
-	return cur.Tprice
+	return cur.RateQuery
 }
 
 func (cur *Binance) GetExchangeName() string {
