@@ -2,7 +2,7 @@
 
 This service gets relevant information about actual exchange rates of given cryptocurrency pairs from different exchanges and answers `"/get_rates"` http queries which return **_.json_** with saved rates.
 
-Exchange rates is updated every **m** seconds (where **m** is a given by user **_integer_** value from `input.txt`)
+Exchange rates is updated every **SleepSec** seconds (where **SleepSec** is a given by user **_integer_** value from `config.toml`)
 
 **_Supported exchanges for now:_** _Binance_, _Exmo_.
 
